@@ -3,7 +3,6 @@
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -29,17 +28,20 @@ import { Input } from "@/components/ui/input"
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
-
+    const [files, setFiles] = useState<File[]>([])
+    console.log(files)
+    console.log(btnTitle)
     const form = useForm<z.infer<typeof UserValidation>>({
         resolver: zodResolver(UserValidation),
         defaultValues: {
-            profile_photo: '',
-            name: '',
-            username: '',
-            bio: ''
+            profile_photo: user?.image || '',
+            name: user?.name || '',
+            username: user?.username || '',
+            bio: user?.bio || ''
         }
     })
 
@@ -49,8 +51,32 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         console.log(values)
     }
 
-    const handleImage = (e: ChangeEvent, fieldChage: (value: string) => void) => {
+    const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
         e.preventDefault()
+        console.log('fieldChange: ', fieldChange)
+        console.log('event: ', e)
+
+        const fileReader = new FileReader()
+
+        if (!!e?.target?.files?.length) {
+            console.log('---1-----')
+            const file = e.target.files[0]
+
+            setFiles(Array.from(e.target.files))
+
+            if (!file.type.includes('image')) return
+            console.log('---2-----')
+
+            fileReader.onload = async (event) => {
+                console.log('---3-----')
+
+                const imageDataUrl = event.target?.result?.toString() || ''
+                fieldChange(imageDataUrl)
+            }
+            console.log('---4-----')
+
+            fileReader.readAsDataURL(file)
+        }
 
     }
 
@@ -87,19 +113,84 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                                 <Input
                                     onChange={(e) => handleImage(e, field.onChange)}
                                     placeholder="Upload a photo"
-                                    className="acoount-form_image-input"
+                                    className="account-form_image-input"
                                     type="file"
                                 // {...field}
                                 />
                             </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
+
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+
+
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col gap-3 w-full">
+                            <FormLabel className="text-base-semibold text-light-2">
+                                Name
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="name"
+                                    className="account-form_input no-focus"
+                                    type="text"
+                                    {...field}
+                                />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col gap-3 w-full">
+                            <FormLabel className="text-base-semibold text-light-2">
+                                Username
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="username"
+                                    className="account-form_input no-focus"
+                                    type="text"
+                                    {...field}
+                                />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="bio"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col gap-3 w-full">
+                            <FormLabel className="text-base-semibold text-light-2">
+                                Bio
+                            </FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    rows={10}
+                                    placeholder="Biography"
+                                    className="account-form_input no-focus"
+                                    {...field}
+                                />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" className="bg-primary-500">Submit</Button>
             </form>
         </Form>
     )
