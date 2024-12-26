@@ -26,7 +26,7 @@ export default function RootLayout({
         }}
     >
         <html lang="en">
-            <body className={`${inter.className} bg-dark-1`}>
+            <body className={`${inter.className} bg-dark-1 w-full flex justify-center items-center min-h-screen`}>
                 {/* <SignedOut>
                     <SignInButton />
                 </SignedOut>

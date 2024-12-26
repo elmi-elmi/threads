@@ -1,10 +1,17 @@
 import AccountProfile from "@/components/forms/AccountProfile"
+import { featchUser } from "@/lib/actions/user.actions"
 import { currentUser } from "@clerk/nextjs/server"
+import { redirect } from "next/navigation"
 
 
 async function Page() {
     const user = await currentUser()
-    const userInfo = {}
+     if (!user?.id) return redirect('/sign-in')
+ 
+     const userInfo = await featchUser(user.id)
+
+    if (!userInfo) return redirect('/onboarding')
+
     const userData = {
         id: user?.id,
         objectId: userInfo?._id,
