@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CommentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,6 @@ interface Props {
 }
 const Comment = ({ threadId, currentUserId, currentUserImg }: Props) => {
     const pathname = usePathname()
-    const router = useRouter()
 
 
     const form = useForm<z.infer<typeof CommentValidation>>({

@@ -9,9 +9,7 @@ type Props = {
     username: string;
 }
 const ProfileHeader = (
-    {
-        accountId,
-        authUserId,
+    { 
         name,
         imgUrl,
         bio,

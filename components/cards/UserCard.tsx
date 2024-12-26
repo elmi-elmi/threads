@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 
-const UserCard = ({id, name, username, imgUrl, personType}:{id: string; name:string;username:string;imgUrl:string;personType:string;})=>{
-    const router = useRouter()
+const UserCard = ({id, name, username, imgUrl}:{id: string; name:string;username:string;imgUrl:string;personType:string;})=>{
+    const router = useRouter() 
     console.log(id, name, username)
     return (
         <article className="user-card">

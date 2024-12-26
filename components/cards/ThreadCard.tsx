@@ -28,9 +28,8 @@ interface Props {
 }
 const ThreadCard = ({
     id,
-    currectUserId, parentId,
     content, author, comments,
-    createdAt, community, isComment
+     isComment 
 }: Props) => {
 
 

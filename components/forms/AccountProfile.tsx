@@ -35,7 +35,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
 
-const AccountProfile = ({ user, btnTitle }: Props) => {
+const AccountProfile = ({ user }: Props) => {
     const pathname = usePathname()
     const router = useRouter()
 
